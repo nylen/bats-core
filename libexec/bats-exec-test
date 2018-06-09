@@ -184,7 +184,11 @@ bats_print_failed_command() {
     echo "#   Store them into a variable first to see the failing value"
   else
     echo ":"
-    ( eval echo "$failed_command" 2>&1 || true ) \
+    # List all variables and filter out read-only variables
+    pass_all_vars="$( declare -p | grep -v '^declare -[a-zA-Z]*r' )"
+    # Pass the variables to a subprocess (to isolate any failures), and Pass them to a subprocess to isolate any failures, and evaluate the
+    # failed command
+    ( bash -c "$pass_all_vars; echo \"$failed_command\"" 2>&1 || true ) \
       | sed "s/^/#   \`/; s/\$/'/"
   fi
 }
