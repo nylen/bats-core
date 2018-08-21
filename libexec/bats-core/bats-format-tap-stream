@@ -63,6 +63,12 @@ log() {
   clear_color
 }
 
+log_bold() {
+  set_color 7 bold
+  printf "%s\n" "$1"
+  clear_color
+}
+
 summary() {
   buffer '\n%d test' "$count"
   if [[ "$count" -ne 1 ]]; then
@@ -164,6 +170,10 @@ while IFS= read -r line; do
   'not ok '* )
     ((++failures))
     fail
+    ;;
+  '# _filename='* )
+    filename="${line#'# _filename='}"
+    log_bold "$filename"
     ;;
   '# '* )
     log "${line:2}"
