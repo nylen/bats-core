@@ -180,6 +180,9 @@ bats_print_failed_command() {
   if [[ "$failed_command" = *'`'* || "$failed_command" = *'$('* ]]; then
     echo
     echo "#   Not evaluating failed command because it contains \` or \$()"
+  elif [[ "$failed_command" = *'<'* || "$failed_command" = *'>'* ]]; then
+    echo
+    echo "#   Not evaluating failed command because it contains < or >"
   elif [[ "$failed_command" = *'$#'* || "$failed_command" = *'$@'* ]]; then
     echo
     echo "#   Cannot evaluate \$# or \$@"
